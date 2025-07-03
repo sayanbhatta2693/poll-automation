@@ -8,8 +8,8 @@ interface GuestRecorderProps {
   setTranscriptions?: (results: TranscriptionResult[]) => void;
 }
 
-const GUEST_WEBSOCKET_URL = 'ws://localhost:3000'; // Or your deployed backend WebSocket URL
-
+//const GUEST_WEBSOCKET_URL = 'https://zmhzpghl-3000.inc1.devtunnels.ms/'; // Or your deployed backend WebSocket URL
+ const GUEST_WEBSOCKET_URL = 'ws://localhost:3000';
 const GuestRecorder: React.FC<GuestRecorderProps> = ({ setTranscriptions }) => {
     const [searchParams] = useSearchParams();
     const meetingId = searchParams.get('meetingId') || 'default-meeting';
