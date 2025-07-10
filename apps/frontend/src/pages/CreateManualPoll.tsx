@@ -15,8 +15,8 @@ import {
   Send,
 } from "lucide-react"
 // Imports for GlassCard and DashboardLayout were removed as they were causing resolution errors.
-// import GlassCard from "../components/GlassCard"
-// import DashboardLayout from "../components/DashboardLayout"
+import GlassCard from "../components/GlassCard"
+import DashboardLayout from "../components/DashboardLayout"
 
 // Interface for a single poll option
 interface PollOption {
@@ -287,7 +287,8 @@ const CreateManualPoll = () => {
   }
 
   return (
-    // DashboardLayout replaced with a div with similar background styling
+    
+    <DashboardLayout>
     <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
@@ -306,12 +307,14 @@ const CreateManualPoll = () => {
               className="mb-6"
             >
               {/* GlassCard replaced with a div with similar styling */}
+              <GlassCard>
               <div className="p-4 rounded-lg shadow-xl bg-green-500/10 backdrop-filter backdrop-blur-lg border border-green-500/30">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-400" />
                   <span className="text-green-400 font-medium">Poll created successfully!</span>
                 </div>
               </div>
+              </GlassCard>
             </motion.div>
           )}
         </AnimatePresence>
@@ -322,6 +325,7 @@ const CreateManualPoll = () => {
             {/* Poll Question Input */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               {/* GlassCard replaced with a div with similar styling */}
+              <GlassCard>
               <div className="p-6 rounded-lg shadow-xl bg-gray-800/50 backdrop-filter backdrop-blur-lg border border-gray-700/50">
                 <div className="space-y-4">
                   <label className="block text-lg font-semibold text-white">Poll Question</label>
@@ -350,6 +354,7 @@ const CreateManualPoll = () => {
                   </div>
                 </div>
               </div>
+              </GlassCard>
             </motion.div>
 
             {/* Question Type Selector */}
@@ -815,6 +820,7 @@ const CreateManualPoll = () => {
         </div>
       </div>
     </div>
+    </DashboardLayout>
   )
 }
 
