@@ -1,97 +1,175 @@
-# React + TypeScript + Vite
+# 🧠 Automatic Poll Generation – Frontend Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is part of a monorepo-based Automatic Poll Generation System developed using React + TypeScript + Vite. It integrates with backend and AI services to allow hosts to create polls (manually or automatically), track participant activity, and display results in real-time.
 
-Currently, two official plugins are available:
+It allows:
+- Hosts to create polls (manually or via voice using AI)
+- Students to join and participate in polls
+- Real-time leaderboards and analytics
+- Secure login/authentication
+- Live transcription and AI question generation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-# Automatic Poll Generation System 🎯
-
-This is the **frontend** for the Automatic Poll Generation and Participant Tracking System, part of a monorepo setup with React + TypeScript + Vite. The project includes automatic poll generation from Zoom classes using AI, live leaderboard, participant tracking, and dashboards.
-
-> ✅ This sub-package lives in `apps/frontend/` of the monorepo.
+📁 Location in monorepo: `apps/frontend/`
 
 ---
 
-## 📦 Tech Stack
+## 🧰 Tech Stack Used
 
-- ⚛️ **React 19**
-- ⚡ **Vite 6**
-- ✨ **TypeScript**
-- 🎨 **TailwindCSS**
-- 🔁 **React Router**
-- 📊 **Recharts**
-- 🧩 **Framer Motion**
-- ✅ **React Hook Form**
-- 💡 ESLint + Type-Aware Rules
+Only tools/packages **actually used** in this frontend app:
+
+| Tool/Library           | Purpose                                        |
+|------------------------|------------------------------------------------|
+| **React** + **Vite**   | App framework + lightning-fast dev server      |
+| **TypeScript**         | Static type checking                          |
+| **Tailwind CSS**       | Utility-first styling                         |
+| **React Router DOM**   | Navigation and routing                        |
+| **Framer Motion**      | Animations and transitions                    |
+| **React Hook Form**    | Form validation and management                |
+| **Lucide React**       | Icon library for UI                           |
+| **Axios**              | HTTP requests (via `services/`)               |
+| **Recharts**           | Chart rendering (analytics, leaderboard)      |
+| **jspdf + autotable**  | Exporting poll reports as PDF                 |
+| **xlsx**               | for spreadsheet export              |
+| **React Hot Toast**    | User notifications                            |
+| **PNPM**               | Package manager (used with Turborepo)         |
 
 ---
 
-## 🚀 Features (Developed by Frontend Team)
+## ⚙️ Setup Instructions
 
-- 🔐 Login, Register, and Forgot Password pages
-- 📊 Host & Student Dashboards
-- 🧠 AI-Generated Question Feed (via backend AI service)
-- 🗣️ Audio Capture UI (for speech input)
-- 👥 Participants tracking
-- 🥇 Live Leaderboard
-- 📈 Reports and analytics
-- ⚙️ Host Settings + Orbital Navigation
-- 💎 Custom reusable components (`GlassCard`, `Sidebar`, `DashboardLayout` etc.)
+### 🔧 Prerequisites
+Ensure the following are installed:
+- [Node.js](https://nodejs.org/) (v18+)
+- [PNPM](https://pnpm.io/) (recommended for monorepo)
+- Git
 
-🛠 Setup Instructions
-📦 Install dependencies
+### 📦 Install Dependencies
+
+1. From the **monorepo root**:
+  ```bash
       pnpm install
 
-🧪 Run dev server
+2. Run Frontend Only
+      cd apps/frontend
       pnpm dev
 
-👨‍💻 Frontend Team
-We are a 7-member frontend team contributing via pull requests to this sub-package under apps/frontend/.
+3. Or run all apps:
+    pnpm dev
+
+4. 🏗 Build for Production
+      pnpm build
+
+5. 🔍 Preview Built App
+      pnpm preview
+
+🗂️ Folder & Component Structure
+
+🔹 src/pages/
+
+| File                     | Description                                           |
+| ------------------------ | ----------------------------------------------------- |
+| `LoginPage.tsx`          | Auth page to log into system                          |
+| `RegisterPage.tsx`       | Register new users                                    |
+| `ForgotPasswordPage.tsx` | Reset password UI                                     |
+| `HomePage.tsx`           | Welcome screen to choose "Create Poll" or "Join Poll" |
+| `CreatePollPage.tsx`     | Choose between Manual or AI-based Poll                |
+| `CreateManualPoll.tsx`   | Form to add questions, options, correct answer        |
+| `AIQuestionFeed.tsx`     | Displays AI-generated questions for approval          |
+| `AudioCapture.tsx`       | Host can speak – audio is sent to Whisper backend     |
+| `HostDashboard.tsx`      | View created polls, track sessions                    |
+| `StudentDashboard.tsx`   | View available polls, join sessions                   |
+| `PollQuestionsPage.tsx`  | Display poll questions for student answering          |
+| `Leaderboard.tsx`        | Shows live leaderboard after quiz                     |
+| `Participants.tsx`       | Track who joined poll session                         |
+| `Reports.tsx`            | Generate PDF reports using `jspdf`                    |
+| `Settings.tsx`           | Change profile/password                               |
+| `ContactUs.tsx`          | Static contact info                                   |
+| `NotFound.tsx`           | 404 error fallback page                               |
+
+🔹 src/components/
+
+| File/Folder                          | Description                                                              |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| `controls/`                          | Includes sliders, selectors for poll config                              |
+| `student/`                           | Student-specific UI blocks like `QuickAccessCards`, `StudentProfilePage` |
+| `host/GuestLinkGenerator.tsx`        | Generates shareable poll link                                            |
+| `Sidebar.tsx` & `StudentSidebar.tsx` | App navigation layout                                                    |
+| `DashboardLayout.tsx`                | Reusable wrapper layout with sidebar                                     |
+| `GlassCard.tsx`                      | Frosted UI container                                                     |
+| `AuthGuard.tsx`                      | Route-level protection based on auth state                               |
+| `LoadingScreen.tsx`                  | Full-screen spinner during loading                                       |
+
+🔹 src/contexts/
+
+| Context              | Use                                    |
+| -------------------- | -------------------------------------- |
+| `AuthContext.tsx`    | Global login token and user context    |
+| `ThemeContext.tsx`   | Toggle dark/light mode                 |
+| `LoadingContext.tsx` | Manage loading state for buttons/pages |
+
+🔹 src/hooks/
+
+| Hook                   | Use                                      |
+| ---------------------- | ---------------------------------------- |
+| `useCopyProtection.ts` | Prevents users from copying poll content |
+
+🔹 src/transcription/
+
+| Component                        | Use                                        |
+| -------------------------------- | ------------------------------------------ |
+| `GuestRecorder.tsx`              | Recorder for guests                        |
+| `HostMicControls.tsx`            | Audio recorder for hosts                   |
+| `LiveTranscriptFeed.tsx`         | Show real-time speech-to-text from Whisper |
+| `micManager.ts`, `wavEncoder.ts` | Mic and audio processing logic             |
+
+
+🔁 Workflow Summary
+
+1. Any one can login after regisstration.
+2. If User wants to create poll (act as host)
+    (i)  First he creates poll session by generating room code and user sends invites with that room code to his/her students through Emails.
+    (ii) user Can choose either: (for generating polls)
+      
+        Create manually (by using manuall poll page)
+        and live streaming Audio/voice → send to Whisper → generate with LLM/Gemini API
+
+3. Poll shared to students.
+
+4. Students join using poll code → see PollQuestionsPage.
+
+5. On submit → backend evaluates → leaderboard & analytics generated
+
+6. Host downloads reports using jspdf
+
+🧪 Testing
+Feature	Status
+Login/Auth	✅ Complete
+UI Responsiveness	✅ Fully responsive
+Backend API Integration	✅ Done
+Leaderboard	✅ Working
+PDF Export	✅ via jspdf
+
+👨‍💻 Frontend Contributors & Component Mapping
+
+🟦 Team-5 (Lead by J. Sai Chaithanya)
+
+Member	                                                  Contributions
+
+1. J. Sai Chaithanya (Lead)      --------   Overall structure, Auth pages (`LoginPage`, `RegisterPage`), `CreateManualPoll`, routing, API integration, dashboard layout (`DashboardLayout`, `Sidebar`), `AuthGuard`, team coordination.
+
+2. Sk. Maseed Zaheer             --------   `CreatePollPage`, `Forgot Password page`, `Participants.tsx`, reusable poll config controls (`ContextRangeSelector`, `FrequencySelector`, etc.).
+
+3. Ayush                         --------   AI integration pages (`AIQuestionFeed.tsx`, `AudioCapture.tsx`), reusable components (`GlassCard`, `LoadingScreen`), `transcription` components (`HostMicControls`, `LiveTranscriptFeed`).
+
+4. P. Shreyansh                  --------   Entire Host dashboard ('Layout','navigation bar', `HostDashboard`), settings (`HostSettings.tsx`, `Settings.tsx`), PDF export / Reports page (`Reports.tsx` using `jspdf`). 
+
+🟦 Team-3 (Lead by Surya Gayatri)
+
+Member	                                                  Contributions
+
+1. Surya Gayatri              -------     StudentDashboard.tsx, student-side UI structure, StudentSidebar.tsx, navigation logic, Team Coordination.
+
+2. Sumitha                    -------     PollQuestionsPage.tsx, StudentLeaderboard.tsx, PollHistoryPage.tsx, AchievementPage.tsx
+
+3. Sayan                      -------     JoinPollPage.tsx, JoinPollSection.tsx, StudentProfilePage.tsx, NotificationPage.tsx, QuickAccessCards.tsx
+
