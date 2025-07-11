@@ -23,6 +23,7 @@ import ContactUs from './pages/ContactUs';
 import ChangePassword from './components/student/ChangePassword';
 import GuestPage from './pages/guest/GuestPage';
 import NotFound from './pages/NotFound';
+import { NotificationProvider } from './contexts/NotificationContext';
 
 
 // Student dashboard section imports
@@ -36,6 +37,7 @@ import SettingsStudent from './components/student/Settings';
 import StudentLeaderboard from './components/student/StudentLeaderboard';
 import DashboardHomePage from './components/student/DashboardHomePage';
 import ActiveSessions from './components/student/ActiveSessions';
+import { AccessibilityProvider } from './contexts/AccessibilityContext';
 
 function App() {
   return (
@@ -51,7 +53,7 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/contactUs" element={<ContactUs />} />
-                
+
                 {/* Host Dashboard Routes */}
                 <Route path="/host" element={
                     <HostDashboard />
@@ -78,7 +80,9 @@ function App() {
                     <Reports />
                 } />
                 <Route path="/host/settings" element={
+                    <AccessibilityProvider>
                     <Settings />
+                    </AccessibilityProvider>
                 } />
                 <Route path="/guest" element={
                   <GuestPage />
@@ -93,7 +97,7 @@ function App() {
         <Route path="profile" element={<StudentProfilePage />} />
         <Route path="achievements" element={<AchievementPage />} />
         <Route path="notifications" element={<NotificationPage />} />
-        <Route path="settings" element={<SettingsStudent />} />
+        <Route path="settings" element={<AccessibilityProvider><SettingsStudent /></AccessibilityProvider>} />
         <Route path="leaderboard" element={<StudentLeaderboard />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="active-sessions" element={<ActiveSessions />} />
