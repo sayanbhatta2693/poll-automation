@@ -58,7 +58,7 @@ const Sidebar = () => {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="flex items-center space-x-3 mb-8 flex-shrink-0"
+        className="flex items-center space-x-3 mb-4 flex-shrink-0"
       >
         <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center shadow-lg">
           <Brain className="w-6 h-6 text-white" />
@@ -67,6 +67,21 @@ const Sidebar = () => {
           <h1 className="text-white font-bold text-lg tracking-wide">Poll System</h1>
           <p className="text-gray-400 text-sm">AI-Powered</p>
         </div>
+      </motion.div>
+      
+      {/* Switch to Student Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="mb-6 flex-shrink-0"
+      >
+        <button
+          onClick={() => navigate('/student')}
+          className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition-all duration-200"
+        >
+          Switch to Student
+        </button>
       </motion.div>
 
       {/* Top fade */}

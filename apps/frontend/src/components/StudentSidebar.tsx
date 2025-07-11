@@ -61,7 +61,7 @@ const StudentSidebar: React.FC<StudentSidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b border-white/10">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 mb-4">
               <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
                 <Users className="w-5 h-5 text-white" />
               </div>
@@ -70,6 +70,14 @@ const StudentSidebar: React.FC<StudentSidebarProps> = ({ isOpen, onClose }) => {
                 <p className="text-sm text-gray-400">Learning Hub</p>
               </div>
             </div>
+            
+            {/* Switch to Host Button */}
+            <button
+              onClick={() => navigate('/host')}
+              className="w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition-all duration-200"
+            >
+              Switch to Host
+            </button>
           </div>
 
           {/* Navigation */}
