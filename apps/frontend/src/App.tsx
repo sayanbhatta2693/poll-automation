@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LoadingProvider } from './contexts/LoadingContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import AuthGuard from './components/AuthGuard';
 import LoadingScreen from './components/LoadingScreen';
 import LoginPage from './pages/LoginPage';
@@ -23,8 +24,6 @@ import ContactUs from './pages/ContactUs';
 import ChangePassword from './components/student/ChangePassword';
 import GuestPage from './pages/guest/GuestPage';
 import NotFound from './pages/NotFound';
-import { NotificationProvider } from './contexts/NotificationContext';
-
 
 // Student dashboard section imports
 import JoinPollPage from './components/student/JoinPollPage';
@@ -44,16 +43,17 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <LoadingProvider>
-          <Router>
-            <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900">
-              <LoadingScreen />
-              <Routes>
+          <NotificationProvider>
+            <Router>
+              <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900">
+                <LoadingScreen />
+                <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/contactUs" element={<ContactUs />} />
-
+                
                 {/* Host Dashboard Routes */}
                 <Route path="/host" element={
                     <HostDashboard />
@@ -80,7 +80,7 @@ function App() {
                     <Reports />
                 } />
                 <Route path="/host/settings" element={
-                    <AccessibilityProvider>
+                  <AccessibilityProvider>
                     <Settings />
                     </AccessibilityProvider>
                 } />
@@ -106,9 +106,10 @@ function App() {
     </Routes>
             </div>
           </Router>
-        </LoadingProvider>
-      </AuthProvider>
-    </ThemeProvider>
+        </NotificationProvider>
+      </LoadingProvider>
+    </AuthProvider>
+  </ThemeProvider>
   );
 }
 
