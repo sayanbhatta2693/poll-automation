@@ -54,7 +54,7 @@ const StudentSidebar: React.FC<StudentSidebarProps> = ({ isOpen, onClose }) => {
         className={`
         fixed left-0 top-0 h-full w-64 z-50 transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0 md:static md:z-auto
+        md:translate-x-0 md:fixed md:z-40
         bg-white/5 backdrop-blur-xl border-r border-white/10
       `}
       >
