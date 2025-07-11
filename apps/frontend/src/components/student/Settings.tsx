@@ -1,23 +1,21 @@
 "use client"
 
 import type React from "react"
-import { useState,useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   User,
   Bell,
-  Palette,
   Smartphone,
   Lock,
   Camera,
   Save,
   RefreshCw,
-  Moon,
-  Sun,
-  Monitor,
+  PersonStanding,
   AlertTriangle
 } from "lucide-react";
 import GlassCard from "../GlassCard";
+import { useAccessibility } from "../../contexts/AccessibilityContext";
 
 
 const Settings: React.FC = () => {
@@ -59,15 +57,20 @@ const Settings: React.FC = () => {
     soundEnabled: true,
   })
 
+  const { settings: appearanceSettings, updateSetting } = useAccessibility();
+  const { fontSize, highContrast, reducedMotion } = appearanceSettings;
 
-  // Appearance Settings
-  const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: "dark",
-    language: "en",
-    fontSize: "medium",
-    reducedMotion: false,
-    highContrast: false,
-  })
+useEffect(() => {
+  document.documentElement.style.fontSize =
+    fontSize === "small"
+      ? "14px"
+      : fontSize === "large"
+        ? "18px"
+        : "16px";
+
+  document.body.classList.toggle("high-contrast", highContrast);
+  document.body.classList.toggle("reduced-motion", reducedMotion);
+}, [fontSize, highContrast, reducedMotion]);
 
 
   const [activeTab, setActiveTab] = useState("profile")
@@ -77,21 +80,21 @@ const Settings: React.FC = () => {
   const tabs = [
     { id: "profile", label: "Profile", icon: User },
     { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "appearance", label: "Appearance", icon: Palette },
+    { id: "accessibility", label: "Accessibility", icon: PersonStanding },
     { id: "security", label: "Security", icon: Lock },
 
   ]
 
   useEffect(() => {
-  document.documentElement.style.fontSize =
-    appearanceSettings.fontSize === "small"
-      ? "14px"
-      : appearanceSettings.fontSize === "large"
-      ? "18px"
-      : "16px";
-}, [appearanceSettings.fontSize]);
+    document.documentElement.style.fontSize =
+      appearanceSettings.fontSize === "small"
+        ? "14px"
+        : appearanceSettings.fontSize === "large"
+          ? "18px"
+          : "16px";
+  }, [appearanceSettings.fontSize]);
 
-// Accessibility: Apply reduced motion and high contrast
+  // Accessibility: Apply reduced motion and high contrast
   useEffect(() => {
     // Reduced Motion
     if (appearanceSettings.reducedMotion) {
@@ -120,16 +123,14 @@ const Settings: React.FC = () => {
   };
 
   const handleSave = async () => {
-  setIsSaving(true);
-  // Save all settings to localStorage (or API)
-  localStorage.setItem("studentSettings", JSON.stringify({
-    profileData,
-    notificationSettings,
-    privacySettings,
-    appearanceSettings,
-    learningSettings,
-  }));
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsSaving(true);
+    // Save all settings to localStorage (or API)
+    localStorage.setItem("studentSettings", JSON.stringify({
+      profileData,
+      notificationSettings,
+      appearanceSettings,
+    }));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSaving(false);
     setShowSavedMessage(true);
     setTimeout(() => setShowSavedMessage(false), 2000); // Hide after 2 seconds
@@ -293,45 +294,17 @@ const Settings: React.FC = () => {
     <div className="space-y-6">
       <GlassCard className="p-6">
         <div className="flex items-center gap-2 mb-6">
-          <Palette className="w-5 h-5 text-purple-400" />
-          <h3 className="text-lg font-semibold text-white">Appearance & Accessibility</h3>
+          <PersonStanding className="w-5 h-5 text-purple-400" />
+          <h3 className="text-lg font-semibold text-white">Accessibility Settings</h3>
         </div>
 
         <div className="space-y-6">
-          {/* Theme Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-3">Theme</label>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { value: "dark", label: "Dark", icon: Moon },
-                { value: "light", label: "Light", icon: Sun },
-                { value: "auto", label: "Auto", icon: Monitor },
-              ].map((theme) => {
-                const Icon = theme.icon
-                return (
-                  <button
-                    key={theme.value}
-                    onClick={() => setAppearanceSettings({ ...appearanceSettings, theme: theme.value })}
-                    className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                      appearanceSettings.theme === theme.value
-                        ? "border-purple-500 bg-purple-500/20"
-                        : "border-white/10 bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <Icon className="w-6 h-6 text-white mx-auto mb-2" />
-                    <span className="text-white text-sm">{theme.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
           {/* Font Size */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Font Size</label>
             <select
               value={appearanceSettings.fontSize}
-              onChange={(e) => setAppearanceSettings({ ...appearanceSettings, fontSize: e.target.value })}
+              onChange={(e) => updateSetting("fontSize", e.target.value as "small" | "medium" | "large")}
               className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50"
             >
               <option value="small" className="bg-gray-800">
@@ -347,37 +320,36 @@ const Settings: React.FC = () => {
           </div>
 
           {/* Accessibility Options */}
-          {[
-            { key: "reducedMotion", label: "Reduced Motion", desc: "Minimize animations and transitions" },
-            { key: "highContrast", label: "High Contrast", desc: "Increase contrast for better visibility" },
-          ].map((setting) => (
-            <div key={setting.key} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+          {(["reducedMotion", "highContrast"] as const).map((key) => (
+            <div key={key} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
               <div>
-                <h4 className="text-white font-medium">{setting.label}</h4>
-                <p className="text-gray-400 text-sm">{setting.desc}</p>
+                <h4 className="text-white font-medium">
+                  {key === "reducedMotion" ? "Reduced Motion" : "High Contrast"}
+                </h4>
+                <p className="text-gray-400 text-sm">
+                  {key === "reducedMotion"
+                    ? "Minimize animations and transitions"
+                    : "Increase contrast for better visibility"}
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={appearanceSettings[setting.key as keyof typeof appearanceSettings]}
-                  onChange={(e) =>
-                    setAppearanceSettings({
-                      ...appearanceSettings,
-                      [setting.key]: e.target.checked,
-                    })
-                  }
+                  checked={appearanceSettings[key]}
+                  onChange={(e) => updateSetting(key, e.target.checked)}
                   className="sr-only peer"
                 />
                 <div className="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
               </label>
             </div>
           ))}
+
         </div>
       </GlassCard>
     </div>
   )
 
-   const renderSecuritySettings = () => (
+  const renderSecuritySettings = () => (
     <div className="space-y-6">
       <GlassCard className="p-6">
         <div className="flex items-center gap-2 mb-6">
@@ -483,7 +455,7 @@ const Settings: React.FC = () => {
         return renderProfileSettings()
       case "notifications":
         return renderNotificationSettings()
-      case "appearance":
+      case "accessibility":
         return renderAppearanceSettings()
       case "security":
         return renderSecuritySettings()
@@ -522,11 +494,10 @@ const Settings: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                activeTab === tab.id
-                  ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
-                  : "bg-white/10 text-gray-300 hover:bg-white/20"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${activeTab === tab.id
+                ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                : "bg-white/10 text-gray-300 hover:bg-white/20"
+                }`}
             >
               <Icon className="w-4 h-4" />
               <span className="hidden sm:inline">{tab.label}</span>
