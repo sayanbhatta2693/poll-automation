@@ -18,13 +18,16 @@ const defaultSettings: HostSettingsType = {
 };
 
 export const HostSettings = () => {
+  // State to hold the current settings for the host
   const [settings, setSettings] = useState<HostSettingsType>(defaultSettings);
 
+  // Handle changes to any input/select field and update the settings state
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setSettings((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Save the current settings to the backend server
   const saveSettings = async () => {
     try {
       const response = await fetch("http://localhost:5001/settings", {
@@ -48,6 +51,7 @@ export const HostSettings = () => {
     <div className="host-settings-container">
       <h2>Host Question Settings</h2>
 
+      {/* Input for Meeting ID */}
       <input
         type="text"
         name="meeting_id"
@@ -56,11 +60,13 @@ export const HostSettings = () => {
         placeholder="Meeting ID"
       />
 
+      {/* Dropdown to select question source */}
       <select name="questionSource" value={settings.questionSource} onChange={handleChange}>
         <option value="gemini">Gemini API</option>
         <option value="llama">LLaMA 3.2</option>
       </select>
 
+      {/* Input for number of questions */}
       <input
         type="number"
         name="numQuestions"
@@ -70,19 +76,22 @@ export const HostSettings = () => {
         min={1}
       />
 
+      {/* Dropdown to select question type */}
       <select name="type" value={settings.type} onChange={handleChange}>
         <option value="MCQ">MCQ</option>
         <option value="True/False">True/False</option>
         <option value="Opinion Poll">Opinion Poll</option>
       </select>
 
+      {/* Dropdown to select difficulty */}
       <select name="difficulty" value={settings.difficulty} onChange={handleChange}>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
 
-    <button onClick={saveSettings}>Save Settings</button>
+      {/* Button to save settings */}
+      <button onClick={saveSettings}>Save Settings</button>
     </div>
   );
 };
