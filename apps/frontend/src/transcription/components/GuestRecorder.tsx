@@ -4,24 +4,28 @@ import { useSearchParams } from 'react-router-dom';
 import { MicrophoneStreamer } from '../utils/microphoneStream';
 import type { TranscriptionResult } from '@shared/types';
 import '../../App.css'; // Assuming you have some basic CSS in App.css
+
 interface GuestRecorderProps {
   setTranscriptions?: (results: TranscriptionResult[]) => void;
 }
 
-//const GUEST_WEBSOCKET_URL = 'https://zmhzpghl-3000.inc1.devtunnels.ms/'; // Or your deployed backend WebSocket URL
- const GUEST_WEBSOCKET_URL = 'ws://localhost:3000';
+// WebSocket URL for guest transcription (update as needed for deployment)
+const GUEST_WEBSOCKET_URL = 'ws://localhost:3000';
+
 const GuestRecorder: React.FC<GuestRecorderProps> = ({ setTranscriptions }) => {
+    // Get meetingId and displayName from URL query parameters
     const [searchParams] = useSearchParams();
     const meetingId = searchParams.get('meetingId') || 'default-meeting';
     const displayName = searchParams.get('displayName') || 'GuestSpeaker'; // Use displayName for user-friendly name
     
+    // State for recording status, UI, and transcriptions
     const [isRecording, setIsRecording] = useState(false);
     const [status, setStatus] = useState('Idle');
     const [lastTranscription, setLastTranscription] = useState('');
     const streamerRef = useRef<MicrophoneStreamer | null>(null);
 
+    // Cleanup streamer on component unmount
     useEffect(() => {
-        // Cleanup on component unmount
         return () => {
             if (streamerRef.current) {
                 streamerRef.current.stop();
@@ -29,36 +33,41 @@ const GuestRecorder: React.FC<GuestRecorderProps> = ({ setTranscriptions }) => {
         };
     }, []);
 
-const [transcripts, setTranscripts] = useState<TranscriptionResult[]>([]);
+    // State to store all transcription results
+    const [transcripts, setTranscripts] = useState<TranscriptionResult[]>([]);
 
-const handleTranscription = (result: TranscriptionResult) => {
-  setLastTranscription(result.text);
-  setTranscripts(prev => {
-    const updated = [...prev, result];
-    setTranscriptions?.(updated); // Send up to parent if provided
-    return updated;
-  });
+    // Handler for receiving new transcription results
+    const handleTranscription = (result: TranscriptionResult) => {
+      setLastTranscription(result.text);
+      setTranscripts(prev => {
+        const updated = [...prev, result];
+        setTranscriptions?.(updated); // Send up to parent if provided
+        return updated;
+      });
 
-  console.log(`[Guest] Transcription: ${result.speaker}: ${result.text}`);
-};
+      console.log(`[Guest] Transcription: ${result.speaker}: ${result.text}`);
+    };
 
-
+    // Handler for status updates from the streamer
     const handleStatus = (message: string) => {
         setStatus(message);
     };
 
+    // Handler for errors during streaming
     const handleError = (error: string) => {
         setStatus(`Error: ${error}`);
         console.error('[Guest] Streamer Error:', error);
         setIsRecording(false);
     };
 
+    // Handler for when the audio stream ends
     const handleStreamEnd = () => {
         setIsRecording(false);
         setStatus('Recording stopped.');
         console.log('[Guest] Stream ended.');
     };
 
+    // Start recording and streaming audio to backend
     const startRecording = async () => {
         if (isRecording) return;
 
@@ -71,6 +80,7 @@ const handleTranscription = (result: TranscriptionResult) => {
             streamerRef.current = null;
         }
 
+        // Create a new MicrophoneStreamer instance
         streamerRef.current = new MicrophoneStreamer({
             websocketUrl: GUEST_WEBSOCKET_URL,
             meetingId: meetingId,
@@ -92,6 +102,7 @@ const handleTranscription = (result: TranscriptionResult) => {
         }
     };
 
+    // Stop recording and streaming
     const stopRecording = () => {
         if (!isRecording) return;
         if (streamerRef.current) {
@@ -110,6 +121,7 @@ const handleTranscription = (result: TranscriptionResult) => {
             <p>Status: <span className={isRecording ? 'status-active' : 'status-idle'}>{status}</span></p>
             
             <div className="button-group">
+                {/* Start/Stop recording buttons */}
                 <button onClick={startRecording} disabled={isRecording}>
                     Start Recording
                 </button>
@@ -118,6 +130,7 @@ const handleTranscription = (result: TranscriptionResult) => {
                 </button>
             </div>
             
+            {/* Display the last transcription result */}
             {lastTranscription && (
                 <div className="transcription-display">
                     <h3>Last Spoken:</h3>
