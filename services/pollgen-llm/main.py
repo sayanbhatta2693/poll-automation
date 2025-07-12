@@ -43,7 +43,10 @@ Important: Your output MUST include all of the following fields for every questi
 - "concept"
 """
 
+# Create a prompt object from the question template
 prompt = ChatPromptTemplate.from_template(question_prompt_template)
+
+# Chain the prompt with the LLM model for question generation
 chain = prompt | model
 
 def generate_questions_llama_chain(settings: dict):
