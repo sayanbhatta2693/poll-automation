@@ -6,11 +6,13 @@ import { HostSettings } from './components/HostSettings';
 import type { TranscriptionResult } from '@shared/types';
 import './App.css';
 
+// Home page for generating guest invitation links
 function HomePage() {
   const [meetingId, setMeetingId] = useState('');
   const [guestId, setGuestId] = useState('');
   const [generatedLink, setGeneratedLink] = useState('');
 
+  // Generates a unique guest link using a random UUID
   const generateLink = () => {
     if (!meetingId) return;
     const id = crypto.randomUUID();
@@ -48,6 +50,7 @@ function HomePage() {
         Generate Guest Invitation Link
       </button>
 
+      {/* Show the generated guest link and ID */}
       {generatedLink && (
         <div style={{ marginTop: '30px' }}>
           <p style={{ color: '#fff' }}>Guest ID: <code>{guestId}</code></p>
@@ -60,6 +63,7 @@ function HomePage() {
   );
 }
 
+// Host page for uploading audio, managing mic, and viewing transcripts
 function HostPage() {
   return (
     <div className="p-4 space-y-8">
@@ -86,18 +90,24 @@ function HostPage() {
   );
 }
 
+// Main app component with routing and guest transcript display
 function MergedApp() {
   const [guestTranscripts, setGuestTranscripts] = useState<TranscriptionResult[]>([]);
 
   return (
     <Router>
       <Routes>
+        {/* Home route */}
         <Route path="/" element={<HomePage />} />
+        {/* Host interface route */}
         <Route path="/host" element={<HostPage />} />
+        {/* Guest recorder route */}
         <Route path="/guest" element={<GuestRecorder setTranscriptions={setGuestTranscripts} />} />
+        {/* Fallback for unknown routes */}
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
 
+      {/* Display live guest transcriptions if available */}
       {guestTranscripts.length > 0 && (
         <div style={{ padding: '1rem', background: '#111', color: 'white' }}>
           <h2>Live Guest Transcription</h2>
