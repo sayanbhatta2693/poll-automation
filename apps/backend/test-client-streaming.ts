@@ -22,7 +22,7 @@ interface TranscriptionResult {
     // Add other properties if your backend sends them, e.g., segment_start, segment_end, words
 }
 
-// You might also receive other message types, e.g., status, pong
+// You might also receive other message types, eg., status, pong
 interface StatusMessage {
     type: 'status';
     message: string;
