@@ -55,7 +55,7 @@ ws.on('message', (data) => {
     }
 });
 
-// 5. Handle errors
+// 5. Handle errors from the WebSocket
 ws.on('error', (error) => {
     console.error('[Test Client] WebSocket error:', error.message);
 });
