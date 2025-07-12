@@ -4,6 +4,7 @@ from vector import get_retriever, generate_hypothetical_answer
 
 model = OllamaLLM(model="llama3.2")  # Initialize the Ollama LLM with the
 
+# Define the prompt template for generating questions using the instructor's content and requirements
 question_prompt_template = """
 Based STRICTLY on the following educational content spoken by the instructor, generate {num_questions} high-quality, thought-provoking {question_type} questions.
 
