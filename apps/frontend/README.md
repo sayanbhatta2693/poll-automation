@@ -148,28 +148,3 @@ UI Responsiveness	✅ Fully responsive
 Backend API Integration	✅ Done
 Leaderboard	✅ Working
 PDF Export	✅ via jspdf
-
-👨‍💻 Frontend Contributors & Component Mapping
-
-🟦 Team-5 (Lead by J. Sai Chaithanya)
-
-Member	                                                  Contributions
-
-1. J. Sai Chaithanya (Lead)      --------   Overall structure, Auth pages (`LoginPage`, `RegisterPage`), `CreateManualPoll`, routing, API integration, dashboard layout (`DashboardLayout`, `Sidebar`), `AuthGuard`, team coordination.
-
-2. Sk. Maseed Zaheer             --------   `CreatePollPage`, `Forgot Password page`, `Participants.tsx`, reusable poll config controls (`ContextRangeSelector`, `FrequencySelector`, etc.).
-
-3. Ayush                         --------   AI integration pages (`AIQuestionFeed.tsx`, `AudioCapture.tsx`), reusable components (`GlassCard`, `LoadingScreen`), `transcription` components (`HostMicControls`, `LiveTranscriptFeed`).
-
-4. P. Shreyansh                  --------   Entire Host dashboard ('Layout','navigation bar', `HostDashboard`), settings (`HostSettings.tsx`, `Settings.tsx`), PDF export / Reports page (`Reports.tsx` using `jspdf`). 
-
-🟦 Team-3 (Lead by Surya Gayatri)
-
-Member	                                                  Contributions
-
-1. Surya Gayatri              -------     StudentDashboard.tsx, student-side UI structure, StudentSidebar.tsx, navigation logic, Team Coordination.
-
-2. Sumitha                    -------     PollQuestionsPage.tsx, StudentLeaderboard.tsx, PollHistoryPage.tsx, AchievementPage.tsx
-
-3. Sayan                      -------     JoinPollPage.tsx, JoinPollSection.tsx, StudentProfilePage.tsx, NotificationPage.tsx, QuickAccessCards.tsx
-
